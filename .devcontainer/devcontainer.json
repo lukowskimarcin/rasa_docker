@@ -31,7 +31,8 @@
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
 		"ms-python.python",
-		"visualstudioexptteam.vscodeintellicode"
+		"visualstudioexptteam.vscodeintellicode",
+		"humao.rest-client"
 	]
 
 	// Uncomment the next line if you want start specific services in your Docker Compose config.
