@@ -74,7 +74,6 @@ pipeline:
     regularization_constant: 0.002  #The scale of regularization.  
     negative_margin_scale: 0.8  #The scale of how important it is to minimize the maximum  similarity between embeddings of different labels.
     drop_rate: 0.2 #Dropout rate for encoder. The higher the value the higher the regularization effect.
-    drop_rate_attention: 0.0  #Dropout rate for attention. Value should be between 0 and 1. The higher the value the higher the regularization effect.
 
   #--------------------------------------------------------------------------
   #Entity Extractors
@@ -82,11 +81,11 @@ pipeline:
   # https://rasa.com/docs/rasa/nlu/entity-extraction/
 
   #can only use the spaCy builtin entity extraction models and can not be retrained !!! 
-  - name: SpacyEntityExtractor
+  - name: "SpacyEntityExtractor"
     #https://rasa.com/docs/rasa/nlu/components/#spacyentityextractor
     #https://spacy.io/api/annotation#section-named-entities
     # dimensions to extract
-    dimensions: ["PERSON", "LOC", "ORG", "PRODUCT","DATE", "TIME", "MONEY", "QUANTITY", "FAC", "EVENT"]
+    # dimensions: ["PERSON", "LOC", "ORG", "PRODUCT","DATE", "TIME", "MONEY", "QUANTITY", "FAC", "EVENT"]
 
   # Duckling lets you extract common entities like dates, amounts of money, distances, and others in a number of languages.  
   # Wymaga serwera  Duckling!!!  docker run -p 8000:8000 rasa/duckling
