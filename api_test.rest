@@ -5,3 +5,11 @@ Content-Type: application/json
    "text":"Jaka pogoda była w tczewie?"
 }
 
+###
+
+POST http://127.0.0.1:5000/interpreter HTTP/1.1
+Content-Type: application/json
+
+{
+   "text":"Jaka pogoda była w tczewie?"
+}
