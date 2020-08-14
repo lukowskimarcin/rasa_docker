@@ -1,0 +1,4 @@
+rasa
+rasa[spacy]
+spacy
+flask
