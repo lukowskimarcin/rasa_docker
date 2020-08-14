@@ -1,20 +1,134 @@
+# zainstalowac pakiet Spacy
+#https://spacy.io/models/pl
+
+
+#https://rasa.com/docs/rasa/user-guide/installation/#install-spacy
+#pip install rasa[spacy]  #trzeba doinstalowac  "However, spaCy and MITIE need to be separately installed if you want to use pipelines containing components from those libraries."
+
+# python -m spacy download pl_core_news_lg
+# python -m spacy link pl_core_news_lg pl
+
+# pl_core_news_lg to największy pakiet ponad 500MB :) 
+
+
+
 # Configuration for Rasa NLU.
 # https://rasa.com/docs/rasa/nlu/components/
-language: en
+language: pl
 pipeline:
-  - name: WhitespaceTokenizer
-  - name: RegexFeaturizer
+
+  #--------------------------------------------------------------------------
+  # Word Vector Sources
+  #The following components load pre-trained models that are needed if you want to use pre-trained word vectors in your pipeline.
+
+  - name: "SpacyNLP"
+    # language model to load
+    model: "pl_core_news_lg"
+    # when retrieving word vectors, this will decide if the casing
+    # of the word is relevant. E.g. `hello` and `Hello` will
+    # retrieve the same vector, if set to `False`. For some
+    # applications and models it makes sense to differentiate
+    # between these two words, therefore setting this to `True`.
+    case_sensitive: False
+
+  #--------------------------------------------------------------------------
+  # Tokenizers
+  #Tokenizers split text into tokens. If you want to split intents into multiple labels, e.g. for predicting multiple intents or for modeling hierarchical intent structure,
+
+  - name: SpacyTokenizer
+    # Flag to check whether to split intents
+    "intent_tokenization_flag": False
+    # Symbol on which intent should be split
+    "intent_split_symbol": "_"
+
+  #--------------------------------------------------------------------------
+  # Text featurizers
+    
+  - name: SpacyFeaturizer
+    # Specify what pooling operation should be used to calculate the vector of
+    # the __CLS__ token. Available options: 'mean' and 'max'.
+    "pooling": "mean"
+  - name: RegexFeaturizer # do sprawdzenia czy moze byc z SpacyFeaturizer
   - name: LexicalSyntacticFeaturizer
   - name: CountVectorsFeaturizer
   - name: CountVectorsFeaturizer
     analyzer: "char_wb"
     min_ngram: 1
     max_ngram: 4
+      
+  #--------------------------------------------------------------------------
+  # Intent Classifiers
+  # Intent classifiers assign one of the intents defined in the domain file to incoming user messages.
+  
   - name: DIETClassifier
+    #https://rasa.com/docs/rasa/nlu/components/#diet-classifier
     epochs: 100
+    embedding_dimension: 20
+    number_of_transformer_layers: 2
+    transformer_size: 256
+    weight_sparsity: 0.8 #Sparsity of the weights in dense layers.     
+    learning_rate: 0.001 
+    loss_type: "softmax"   
+    ranking_length: 10 #Number of top actions to normalize scores for loss type 'softmax'. Set to 0 to turn off normalization. 
+    evaluate_every_number_of_epochs: 20
+    regularization_constant: 0.002  #The scale of regularization.  
+    negative_margin_scale: 0.8  #The scale of how important it is to minimize the maximum  similarity between embeddings of different labels.
+    drop_rate: 0.2 #Dropout rate for encoder. The higher the value the higher the regularization effect.
+    drop_rate_attention: 0.0  #Dropout rate for attention. Value should be between 0 and 1. The higher the value the higher the regularization effect.
+
+  #--------------------------------------------------------------------------
+  #Entity Extractors
+  #Entity extractors extract entities, such as person names or locations, from the user message.  
+  # https://rasa.com/docs/rasa/nlu/entity-extraction/
+
+  #can only use the spaCy builtin entity extraction models and can not be retrained !!! 
+  - name: SpacyEntityExtractor
+    #https://rasa.com/docs/rasa/nlu/components/#spacyentityextractor
+    #https://spacy.io/api/annotation#section-named-entities
+    # dimensions to extract
+    dimensions: ["PERSON", "LOC", "ORG", "PRODUCT","DATE", "TIME", "MONEY", "QUANTITY", "FAC", "EVENT"]
+
+  # Duckling lets you extract common entities like dates, amounts of money, distances, and others in a number of languages.  
+  # Wymaga serwera  Duckling!!!  docker run -p 8000:8000 rasa/duckling
+  - name: DucklingHTTPExtractor   
+    # url of the running duckling server  
+    url: "http://duckling:8000"
+    # dimensions to extract
+    dimensions: ["time", "number", "amount-of-money", "distance"]
+    # allows you to configure the locale, by default the language is
+    # used
+    locale: "pl_PL"
+    # if not set the default timezone of Duckling is going to be used
+    # needed to calculate dates from relative expressions like "tomorrow"
+    timezone: "Europe/Warsaw"
+    # Timeout for receiving response from http url of the running duckling server
+    # if not set the default timeout of duckling http url is set to 3 seconds.
+    timeout : 3
+
+  # Conditional random field (CRF) entity extraction
+  # Wymaga  sklearn-crfsuite!!!!  -> pip install sklearn-crfsuite
+  # good for training custom entities :) wiec do rozwazenia
+  - name: CRFEntityExtractor         
+  
+  # https://rasa.com/docs/rasa/nlu/components/#entitysynonymmapper
+  # do mapowania synonimow z nlu np.
+  #  "text": "I moved to New York City",
+  #  "text": "I got a new flat in NYC.",
+  #  dla obu przypadkow rozpoznac jako encja city z wartoscia nyc, chyba wymaga aby nlu było w formacie json!!! 
   - name: EntitySynonymMapper
+  
+  #--------------------------------------------------------------------------
+  #Selectors
+  #Selectors predict a bot response from a set of candidate responses.
   - name: ResponseSelector
+    # https://rasa.com/docs/rasa/nlu/components/#responseselector
     epochs: 100
+    learning_rate: 0.001
+    loss_type: "softmax" 
+    ranking_length: 10     
+
+
+
 
 # Configuration for Rasa Core.
 # https://rasa.com/docs/rasa/core/policies/
@@ -24,3 +138,10 @@ policies:
     max_history: 5
     epochs: 100
   - name: MappingPolicy
+
+  # polityka gdy nie wiadomo jak intencja uzytkownika
+  - name: "FallbackPolicy"
+    nlu_threshold: 0.3
+    ambiguity_threshold: 0.1
+    core_threshold: 0.3
+    fallback_action_name: 'action_default_fallback' #nazwa akcji do wykonania, tu najlepiej przekierowanie od czlowieka

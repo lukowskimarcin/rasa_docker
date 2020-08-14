@@ -1,56 +1,24 @@
 ## intent:greet
-- hey
-- hello
-- hi
-- good morning
-- good evening
-- hey there
+- Cześć
+- Witam
+- Siema
 
 ## intent:goodbye
-- bye
-- goodbye
-- see you around
-- see you later
+- papa
+- żegnam
 
-## intent:affirm
-- yes
-- indeed
-- of course
-- that sounds good
-- correct
+## intent:weather
+# - Jaka jest dzisiaj pogoda w [Warszawie](city)
+# - Jaka jest dzisiaj pogoda w [Gdańsku](city)
+# - Jaka jest dzisiaj pogoda w [Lublinie](city)
+# - Jaka jest dzisiaj pogoda w [Gdyni](city)
 
-## intent:deny
-- no
-- never
-- I don't think so
-- don't like that
-- no way
-- not really
+ - Jaka jest dzisiaj pogoda w Warszawie
+ - Jaka jest dzisiaj pogoda w Gdańsku
+ - Jaka jest dzisiaj pogoda w Lublinie
+ - Jaka jest dzisiaj pogoda w Gdyni
 
-## intent:mood_great
-- perfect
-- very good
-- great
-- amazing
-- wonderful
-- I am feeling very good
-- I am great
-- I'm good
-
-## intent:mood_unhappy
-- sad
-- very sad
-- unhappy
-- bad
-- very bad
-- awful
-- terrible
-- not very good
-- extremely sad
-- so sad
-
-## intent:bot_challenge
-- are you a bot?
-- are you a human?
-- am I talking to a bot?
-- am I talking to a human?
+ - Jaka jest wczoraj pogoda w Warszawie
+ - Jaka jest wczoraj pogoda w Gdańsku
+ - Jaka jest wczoraj pogoda w Lublinie
+ - Jaka jest wczoraj pogoda w Gdyni

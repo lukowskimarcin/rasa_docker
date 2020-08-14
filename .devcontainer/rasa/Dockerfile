@@ -9,8 +9,8 @@ RUN pip3 --disable-pip-version-check --no-cache-dir install -r /tmp/pip-tmp/requ
 
 
 RUN python3 -m spacy info
-RUN python3 -m spacy download pl_core_news_sm
-RUN python3 -m spacy link pl_core_news_sm pl    
+RUN python3 -m spacy download pl_core_news_lg
+RUN python3 -m spacy link pl_core_news_lg pl    
 
 # [Optional] Uncomment this section to install additional OS packages.
 # RUN apt-get update \
