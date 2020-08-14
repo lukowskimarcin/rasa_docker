@@ -4,3 +4,4 @@ Content-Type: application/json
 {
    "text":"Jaka pogoda była w tczewie?"
 }
+
