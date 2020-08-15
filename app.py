@@ -15,7 +15,7 @@ def load_interpreter(model_path):
 app = Flask(__name__)
 interpreter = load_interpreter("./models/nlu-20200814-182845.tar.gz")
 
-@app.route('/')
+@app.route('/') 
 def index():
     return "Hello, World!"
 
