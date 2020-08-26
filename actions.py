@@ -23,7 +23,7 @@ class ActionHelloWorld(Action):
 
 
         color = tracker.get_slot('client_color')
-        persName = tracker.get_slot('client_color')
+        persName = tracker.get_slot('persName')
 
         if color == 'czerwony':
             dispatcher.utter_message(text="{} lubisz {} pewnie jesteś agresywny".format(persName, color))
