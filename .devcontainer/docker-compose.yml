@@ -14,10 +14,10 @@ services:
       - ..:/workspace:cached
 
     ports:
-      - "5005:5005"
+      - "5010:5005"
     command: sleep infinity
 
   duckling:
     image: rasa/duckling
     ports:
-      - "8000:8000"      
+      - "8010:8000"      

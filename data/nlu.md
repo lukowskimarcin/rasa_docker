@@ -1,16 +1,24 @@
-## intent:greet
-- Cześć
-- Witam
-- Siema
+## intent:start
+ - start
+
+
+## intent:name_response
+ - mam na imię Marcin 
+ - mam na imię Monika
+
+ 
 
 ## intent:goodbye
 - papa
 - żegnam
 
-## intent:weather
- - Jaka jest dzisiaj pogoda w Warszawie
- - Jaka jest dzisiaj pogoda w Gdańsku
- - Jaka jest dzisiaj pogoda w Gdyni
- - Jaka była wczoraj pogoda w Warszawie
- - Jaka była wczoraj pogoda w Gdańsku
- - Jaka była wczoraj pogoda w Gdyni
+## intent:select_color
+ - [niebieski](client_color)
+ - [czerwony](client_color)
+
+
+ ## intent:confirm
+ - tak
+
+ ## intent:denny
+  - nie

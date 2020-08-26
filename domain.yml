@@ -1,17 +1,63 @@
+actions:
+  - action_color
+  
+slots:
+  client_color:
+    type: text
+
+  persName:
+    type: text    
+
+entities:
+  - client_color
+  - persName
+
 intents:
-  - greet
+  - start
+  - name_response
   - goodbye
-  - weather
+  - select_color
+  - confirm
+  - denny
 
 responses:
-  utter_greet:
-  - text: "Witam w czym mogę pomóc"
+  utter_ask_name:
+   - text: "Jak masz na imię?"
 
-  utter_weather:
-  - text: "Jest słonecznie i ciepło 25 stopni"
+  utter_greet:
+    - text: "witaj  {persName}"
 
   utter_goodby:
   - text: "Żegnam"
+
+  utter_blue:
+    - text: "{persName} lubisz {client_color} pewnie jesteś spokojny"
+
+  utter_red:
+    - text: "{persName} lubisz {client_color} pewnie jesteś agresywny"
+
+
+  utter_ask_age:
+    - text: "Czy masz ponad 18 lat?"
+      buttons:
+        - title: "tak"
+          payload: "/confirm"
+        - title: "nie"
+          payload: "/denny"
+
+  utter_ask_color:
+    - text: "Jaki kolor lubisz?"
+      buttons:
+      - title: "niebieski"
+        payload: '/select_color{"client_color" : "niebieski"}'
+      - title: "czerwony"
+        payload: '/select_color{"client_color" : "czerwony"}'
+
+  utter_age_ok:
+    - text: "No to super"
+ 
+  utter_age_no:
+    - text: "No to spadaj !!!"    
 
 
 session_config:
