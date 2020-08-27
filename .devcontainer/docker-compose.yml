@@ -14,7 +14,10 @@ services:
       - ..:/workspace:cached
 
     ports:
-      - "5010:5005"
+      - "5005:5005"
+      - "5055:5055"
+      - "8888:8888"
+      - "8090:8090"
     command: sleep infinity
 
   duckling:
